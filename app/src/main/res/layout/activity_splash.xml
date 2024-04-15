@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@drawable/ic_launcher_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".xml.SplashActivity">
+
+    <com.thewind.box2dmover.rain.RainSurfaceView
+        android:id="@+id/rain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <TextView
+        android:textAlignment="center"
+        android:text="xxxx"
+        android:gravity="center"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</FrameLayout>

@@ -3,6 +3,7 @@ package com.thewind.box2dmover
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,13 +17,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.thewind.box2dmover.mov.model.WorldParam
-import com.thewind.box2dmover.rain.RainView
+import com.thewind.box2dmover.rain.RainTextureView
 import com.thewind.box2dmover.rain.createRain
 import com.thewind.box2dmover.ui.theme.BiliPink
 import com.thewind.box2dmover.ui.theme.Box2DMoverTheme
@@ -35,14 +39,22 @@ class MainActivity : ComponentActivity() {
             Box2DMoverTheme {
 
                 val rainView = remember {
-                    RainView(this)
+                    RainTextureView(this)
                 }
 
                 val scope = rememberCoroutineScope()
 
-                Box(modifier = Modifier.fillMaxSize()) {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .drawBehind {
+                    }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = "",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.FillBounds
+                    )
                     AndroidView(factory = { rainView }, modifier = Modifier.fillMaxSize())
-
                     Box(
                         modifier = Modifier
                             .padding(bottom = 30.dp)
@@ -61,6 +73,7 @@ class MainActivity : ComponentActivity() {
                                         ),
                                         list = createRain()
                                     )
+                                    //startActivity(Intent(this@MainActivity, SplashActivity::class.java))
                                 }
 
                             }
