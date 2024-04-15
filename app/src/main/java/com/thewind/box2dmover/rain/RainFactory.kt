@@ -36,6 +36,7 @@ fun createRain(): List<BodyItem> {
                 bodyType = DynamicBody,
                 gravityScale = 0.8f,
                 density = 1f,
+                friction = 1f,
                 restitution = 0f
             )
         ),
@@ -50,6 +51,7 @@ fun createRain(): List<BodyItem> {
             physicalParam = PhysicalParam(
                 bodyType = DynamicBody,
                 gravityScale = 1f,
+                friction = 1f,
                 restitution = 0f
             )
         ),
@@ -64,6 +66,7 @@ fun createRain(): List<BodyItem> {
             physicalParam = PhysicalParam(
                 bodyType = DynamicBody,
                 gravityScale = 1f,
+                friction = 1f,
                 restitution = 0f
             )
         ),
@@ -79,6 +82,7 @@ fun createRain(): List<BodyItem> {
                 bodyType = DynamicBody,
                 gravityScale = 1f,
                 restitution = 0f,
+                friction = 1f,
                 linearVelocityX = 5f
             )
         ),
@@ -94,12 +98,13 @@ fun createRain(): List<BodyItem> {
                 bodyType = DynamicBody,
                 gravityScale = 1f,
                 restitution = 0f,
+                friction = 1f,
                 linearVelocityX = 5f
             )
         ),
         BodyItem(
             id = 6,
-            width = 2200f,
+            width = 2400f,
             height = 50f,
             startX = 0,
             startY = 2100,
