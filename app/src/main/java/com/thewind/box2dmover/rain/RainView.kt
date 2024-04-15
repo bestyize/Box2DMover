@@ -1,19 +1,23 @@
 package com.thewind.box2dmover.rain
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.World
+import com.thewind.box2dmover.app.toast
 import com.thewind.box2dmover.mov.factory.createBody
 import com.thewind.box2dmover.mov.factory.createWorld
 import com.thewind.box2dmover.mov.model.BodyItem
 import com.thewind.box2dmover.mov.model.CircleShape
 import com.thewind.box2dmover.mov.model.PolygonShape
 import com.thewind.box2dmover.mov.model.WorldParam
+import com.thewind.box2dmover.mov.util.detectTouchBody
 import com.thewind.box2dmover.mov.util.meterToPx
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +52,22 @@ class RainView(context: Context, attributeSet: AttributeSet? = null) : View(cont
         bodyList.forEach {
             drawBody(canvas, it)
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        val action = event?.action ?: return super.onTouchEvent(event)
+        when (action) {
+            MotionEvent.ACTION_DOWN -> {
+                val body = bodyList.find { it.detectTouchBody(event) }
+                if (body != null) {
+                    toast("you touch ${(body.userData as? BodyItem)?.id}")
+                    return true
+                }
+            }
+        }
+        return super.onTouchEvent(event)
+
     }
 
 
