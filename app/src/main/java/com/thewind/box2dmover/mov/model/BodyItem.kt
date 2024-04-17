@@ -26,7 +26,7 @@ val BodyItem.box2DShape: Shape
         }
 
         CircleShape -> com.badlogic.gdx.physics.box2d.CircleShape().apply {
-            radius = width.pxToMeter
+            radius = width.pxToMeter / 2
         }
 
         else -> com.badlogic.gdx.physics.box2d.PolygonShape()

@@ -9,6 +9,7 @@ import com.thewind.box2dmover.mov.model.PhysicalParam
 import com.thewind.box2dmover.mov.model.StaticBody
 import com.thewind.box2dmover.mov.model.box2DShape
 import com.thewind.box2dmover.mov.model.box2dBodyType
+import com.thewind.box2dmover.mov.util.meterToPx
 import com.thewind.box2dmover.mov.util.pxToMeter
 import com.thewind.box2dmover.mov.util.screenHeight
 import com.thewind.box2dmover.mov.util.screenWidth
@@ -96,10 +97,10 @@ fun createBox2DFullScreenBoundBound(
                 BodyItem(
                     desc = "bottom bound",
                     id = 10003,
-                    width = screenWidth.toFloat(),
-                    height = 50f,
+                    width = screenWidth.toFloat() * 2,
+                    height = 1f,
                     startX = 0,
-                    startY = screenHeight + 50,
+                    startY = (screenHeight *0.9).toInt(),
                     physicalParam = PhysicalParam(bodyType = StaticBody, friction = 1f)
                 )
             )
