@@ -1,5 +1,6 @@
 package com.thewind.box2dmover.mov.model
 
+import android.view.View
 import com.badlogic.gdx.physics.box2d.Shape
 import com.thewind.box2dmover.mov.util.pxToMeter
 
@@ -11,9 +12,11 @@ data class BodyItem(
     val startY: Int = 0,
     val shape: Int = PolygonShape,
     val angle: Float = 0f,
-    val fixedRotation: Boolean = false,
-    val physicalParam: PhysicalParam = PhysicalParam()
-)
+    val physicalParam: PhysicalParam = PhysicalParam(),
+    val desc: String = ""
+) {
+    var view: View? = null
+}
 
 
 val BodyItem.box2DShape: Shape

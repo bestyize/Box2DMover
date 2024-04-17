@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.Surface
 import android.view.TextureView
 import com.badlogic.gdx.physics.box2d.Body
+import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.World
 import com.thewind.box2dmover.app.toast
 import com.thewind.box2dmover.mov.factory.createBody
@@ -82,8 +83,8 @@ class RainTextureView(context: Context, attributeSet: AttributeSet? = null) :
             )
         } else if (bodyItem.shape == CircleShape) {
             val radius = bodyItem.width / 2
-            val cx = body.position.x + radius
-            val cy = body.position.y + radius
+            val cx = body.position.x.meterToPx + radius
+            val cy = body.position.y.meterToPx + radius
             canvas.drawCircle(cx, cy, radius, circlePainter)
         }
         canvas.rotate(-body.angle)
@@ -96,7 +97,6 @@ class RainTextureView(context: Context, attributeSet: AttributeSet? = null) :
         bodyList.clear()
         world.clearForces()
         world.dispose()
-
         worldParam = param
         world = createWorld(param)
         bodyList.addAll(list.map { createBody(world, it) })
