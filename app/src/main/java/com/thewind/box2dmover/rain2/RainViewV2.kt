@@ -110,7 +110,7 @@ class RainViewV2(context: Context, attributeSet: AttributeSet? = null) :
             layoutParams = ViewGroup.LayoutParams(bodyItem.width.toInt(), bodyItem.height.toInt())
             rotation = bodyItem.angle.viewAngleToB2dAngle
             scaleType = ImageView.ScaleType.FIT_XY
-            setImageResource(R.drawable.red_icon1)
+            setImageResource(R.drawable.chengzi)
         }
         bodyItem.view = imageView
         addView(imageView)

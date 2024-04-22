@@ -22,7 +22,7 @@ data class BodyItem(
 val BodyItem.box2DShape: Shape
     get() = when (shape) {
         PolygonShape -> com.badlogic.gdx.physics.box2d.PolygonShape().apply {
-            setAsBox(width.pxToMeter, height.pxToMeter)
+            setAsBox(width.pxToMeter / 2, height.pxToMeter / 2)
         }
 
         CircleShape -> com.badlogic.gdx.physics.box2d.CircleShape().apply {

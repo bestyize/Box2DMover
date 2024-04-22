@@ -9,7 +9,6 @@ import com.thewind.box2dmover.mov.model.PhysicalParam
 import com.thewind.box2dmover.mov.model.StaticBody
 import com.thewind.box2dmover.mov.model.box2DShape
 import com.thewind.box2dmover.mov.model.box2dBodyType
-import com.thewind.box2dmover.mov.util.meterToPx
 import com.thewind.box2dmover.mov.util.pxToMeter
 import com.thewind.box2dmover.mov.util.screenHeight
 import com.thewind.box2dmover.mov.util.screenWidth
@@ -56,9 +55,9 @@ fun createBox2DFullScreenBoundBound(
                 BodyItem(
                     desc = "left bound",
                     id = 10000,
-                    width = 50f,
-                    height = screenHeight.toFloat(),
-                    startX = -50,
+                    width = 0f,
+                    height = screenHeight.toFloat() * 2,
+                    startX = 0,
                     startY = 0,
                     physicalParam = PhysicalParam(bodyType = StaticBody, friction = 1f)
                 )
@@ -69,8 +68,8 @@ fun createBox2DFullScreenBoundBound(
                 BodyItem(
                     desc = "top bound",
                     id = 10001,
-                    width = screenWidth.toFloat(),
-                    height = 50f,
+                    width = screenWidth.toFloat() * 2,
+                    height = 0f,
                     startX = 0,
                     startY = -50,
                     physicalParam = PhysicalParam(bodyType = StaticBody, friction = 1f)
@@ -83,9 +82,9 @@ fun createBox2DFullScreenBoundBound(
                 BodyItem(
                     desc = "right bound",
                     id = 10002,
-                    width = 50f,
-                    height = screenHeight.toFloat(),
-                    startX = screenWidth + 50,
+                    width = 0f,
+                    height = screenHeight.toFloat() * 2,
+                    startX = screenWidth,
                     startY = 0,
                     physicalParam = PhysicalParam(bodyType = StaticBody, friction = 1f)
                 )
@@ -98,9 +97,9 @@ fun createBox2DFullScreenBoundBound(
                     desc = "bottom bound",
                     id = 10003,
                     width = screenWidth.toFloat() * 2,
-                    height = 1f,
+                    height = 0f,
                     startX = 0,
-                    startY = (screenHeight *0.9).toInt(),
+                    startY = (screenHeight * 1).toInt(),
                     physicalParam = PhysicalParam(bodyType = StaticBody, friction = 1f)
                 )
             )

@@ -97,7 +97,7 @@ private fun createBody(): List<BodyItem> = listOf(
         shape = PolygonShape,
         angle = 0f,
         physicalParam = PhysicalParam(
-            bodyType = DynamicBody, friction = 1f, gravityScale = 0.3f
+            bodyType = DynamicBody, friction = 1f, gravityScale = 0.4f
         )
     ), BodyItem(
         id = 7,

@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.libGdx2d)
     implementation(libs.libGdx2dNative)
+    implementation(libs.composeNavigation)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)

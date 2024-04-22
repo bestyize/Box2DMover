@@ -3,7 +3,6 @@ package com.thewind.box2dmover
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -29,10 +27,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.updateBounds
 import com.thewind.box2dmover.app.App
 import com.thewind.box2dmover.mov.model.WorldParam
-import com.thewind.box2dmover.rain.RainTextureView
-import com.thewind.box2dmover.rain.createRain
 import com.thewind.box2dmover.rain2.RainViewV2
-import com.thewind.box2dmover.rain2.createRainV2
+import com.thewind.box2dmover.rain2.createSnowByType
 import com.thewind.box2dmover.ui.theme.BiliPink
 import com.thewind.box2dmover.ui.theme.Box2DMoverTheme
 import kotlinx.coroutines.launch
@@ -69,11 +65,11 @@ class MainActivity : ComponentActivity() {
                                 rainView.play(
                                     param = WorldParam(
                                         xGravity = 0f,
-                                        yGravity = 9.8f,
+                                        yGravity = 0.5f,
                                         doSleep = false,
                                         playTime = 20000,
                                         timeStep = 1 / 120f
-                                    ), list = createRainV2()
+                                    ), list = createSnowByType(1)
                                 )
                             }
 
@@ -89,9 +85,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-        window.setDecorFitsSystemWindows(false)
-        enableEdgeToEdge()
 
     }
 }
