@@ -1,37 +1,41 @@
-package com.thewind.box2dmover.effects.module.page.snowdrop
+package com.thewind.box2dmover.effects.module.page.beziermove
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.thewind.box2dmover.effects.main.EffectPageActionButton
 import com.thewind.box2dmover.effects.main.EffectPageBackgroundCard
 import com.thewind.box2dmover.effects.module.EffectType
-import com.thewind.box2dmover.rain2.RainViewV2
 
 @Composable
 @Preview
-fun SnowDropPage() {
+fun BezierMovePage() {
+    EffectPageBackgroundCard(EffectType.BezierPath.title)
     val context = LocalContext.current
-    val rainView = remember {
-        RainViewV2(context)
+    val view = remember {
+        BezierView2(context)
     }
-
-    val scope = rememberCoroutineScope()
-    EffectPageBackgroundCard(EffectType.SnowDrop.title)
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
     ) {
-        AndroidView(factory = { rainView }, modifier = Modifier.fillMaxSize())
-        EffectPageActionButton(modifier = Modifier.align(Alignment.BottomCenter), title = "Play") {
+        AndroidView(factory = {
+            view
+        }, modifier = Modifier.fillMaxSize())
 
+        EffectPageActionButton(modifier = Modifier.align(Alignment.BottomCenter), "Play") {
+            view.play()
         }
+
     }
 
 

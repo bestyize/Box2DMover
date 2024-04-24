@@ -18,6 +18,7 @@ import com.thewind.box2dmover.effects.main.EffectPage
 import com.thewind.box2dmover.effects.module.EffectType
 import com.thewind.box2dmover.effects.module.page.ballflybinding.BalloonFlyBindingPage
 import com.thewind.box2dmover.effects.module.page.balloonfly.BalloonFlyPage
+import com.thewind.box2dmover.effects.module.page.beziermove.BezierMovePage
 import com.thewind.box2dmover.effects.module.page.snowdrop.SnowDropPage
 
 val LocalEffectNavigation = staticCompositionLocalOf<NavHostController> {
@@ -57,6 +58,10 @@ fun EffectRouterPage() {
                 exitTransition = slideOutToRight
             ) {
                 BalloonFlyBindingPage()
+            }
+
+            composable(EffectType.BezierPath.router, enterTransition = slideInFromRight, exitTransition = slideOutToRight) {
+                BezierMovePage()
             }
         }
     }
