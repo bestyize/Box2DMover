@@ -5,7 +5,6 @@ import android.animation.AnimatorSet
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup
-import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import androidx.core.view.children
 import androidx.core.view.doOnPreDraw
@@ -47,8 +46,6 @@ class BezierView2(context: Context, attributeSet: AttributeSet? = null) :
                 )
             }
             val set = AnimatorSet().apply {
-                interpolator = LinearInterpolator()
-                duration = 5000
                 playTogether(allAnimatorList)
             }
             set.start()
@@ -83,32 +80,70 @@ fun mockList2(): List<AnimateItem> = listOf(
                         x = 0.5f, y = 0.5f
                     ),
                     control1 = AnimatePoint(
-                        x = 1f, y = 1f
+                        x = 0f, y = 1f
                     ),
                     control2 = AnimatePoint(
                         x = 0.5f, y = 1f
                     )
                 )
             ),
-//            CommonAnimateItem(
-//                type = AnimateType.MOVE.type,
-//                duration = 2000,
-//                delay = 2001,
-//                param = BezierParam(
-//                    start = AnimatePoint(
-//                        x = 0.4f, y = 0.4f
-//                    ),
-//                    end = AnimatePoint(
-//                        x = 1f, y = 0.4f
-//                    ),
-//                    control1 = AnimatePoint(
-//                        x = 0.6f, y = 0.4f
-//                    ),
-//                    control2 = AnimatePoint(
-//                        x = 0.7f, y = 0.4f
-//                    )
-//                )
-//            )
+            CommonAnimateItem(
+                type = AnimateType.MOVE.type,
+                duration = 2000,
+                delay = 2000,
+                param = BezierParam(
+                    start = AnimatePoint(
+                        x = 0.5f, y = 0.5f
+                    ),
+                    end = AnimatePoint(
+                        x = 1f, y = 0.5f
+                    ),
+                    control1 = AnimatePoint(
+                        x = 0.7f, y = 0.5f
+                    ),
+                    control2 = AnimatePoint(
+                        x = 0.8f, y = 0.5f
+                    )
+                )
+            ),
+            CommonAnimateItem(
+                type = AnimateType.SIZE.type,
+                duration = 4000,
+                delay = 0,
+                param = BezierParam(
+                    start = AnimatePoint(
+                        x = 0f, y = 1f
+                    ),
+                    end = AnimatePoint(
+                        x = 1f, y = 2f
+                    ),
+                    control1 = AnimatePoint(
+                        x = 0f, y = 0f
+                    ),
+                    control2 = AnimatePoint(
+                        x = 1f, y = 0f
+                    )
+                )
+            ),
+            CommonAnimateItem(
+                type = AnimateType.ROTATE.type,
+                duration = 2000,
+                delay = 1000,
+                param = BezierParam(
+                    start = AnimatePoint(
+                        x = 0f, y = 0f
+                    ),
+                    end = AnimatePoint(
+                        x = 1f, y = 0f
+                    ),
+                    control1 = AnimatePoint(
+                        x = 0f, y = 1f
+                    ),
+                    control2 = AnimatePoint(
+                        x = 1f, y = 1f
+                    )
+                )
+            )
         )
     )
 )

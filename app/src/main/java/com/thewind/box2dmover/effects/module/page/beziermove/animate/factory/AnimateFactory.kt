@@ -3,6 +3,7 @@ package com.thewind.box2dmover.effects.module.page.beziermove.animate.factory
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.graphics.Path
+import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import com.thewind.box2dmover.effects.module.page.beziermove.animate.model.AnimateItem
@@ -76,6 +77,7 @@ fun decodeToAnimatorList(
                 duration = item.duration
                 addUpdateListener {
                     val angle = it.getAnimatedValue("y") as Float
+                    Log.i("[read", "angle = $angle")
                     view.rotation = 360 * angle
                 }
             }
