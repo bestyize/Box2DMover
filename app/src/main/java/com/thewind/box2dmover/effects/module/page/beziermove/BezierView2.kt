@@ -131,16 +131,16 @@ fun mockList2(): List<AnimateItem> = listOf(
                 delay = 1000,
                 param = BezierParam(
                     start = AnimatePoint(
-                        x = 0f, y = 0f
+                        x = -1f, y = -90f
                     ),
                     end = AnimatePoint(
-                        x = 1f, y = 0f
+                        x = 1f, y = 90f
                     ),
                     control1 = AnimatePoint(
-                        x = 0f, y = 1f
+                        x = 0f, y = 0f
                     ),
                     control2 = AnimatePoint(
-                        x = 1f, y = 1f
+                        x = 0f, y = 0f
                     )
                 )
             )

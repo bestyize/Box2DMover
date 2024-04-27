@@ -78,7 +78,7 @@ fun decodeToAnimatorList(
                 addUpdateListener {
                     val angle = it.getAnimatedValue("y") as Float
                     Log.i("[read", "angle = $angle")
-                    view.rotation = 360 * angle
+                    view.rotation = angle
                 }
             }
         }
