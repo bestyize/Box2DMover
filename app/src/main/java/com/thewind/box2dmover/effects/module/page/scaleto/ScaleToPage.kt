@@ -30,7 +30,7 @@ private suspend fun doKeepRadioScaleAnimate(animateView: View, targetRect: Rect)
 
     val targetLeftMargin = targetRect.centerX() - targetWidth / 2
 
-    val targetRightMargin = targetRect.centerX() + targetWidth / 2
+    val targetRightMargin = animateView.width - targetRect.centerX() - targetWidth / 2
 
     val scaleAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
         interpolator = AccelerateInterpolator()
@@ -53,3 +53,4 @@ private suspend fun doKeepRadioScaleAnimate(animateView: View, targetRect: Rect)
     }
     scaleAnimator.start()
 }
+
