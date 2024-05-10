@@ -4,6 +4,6 @@ enum class EffectType(val title: String, val router: String, val support: Boolea
     BalloonFly("气球上升", "/page/balloonFly", true),
     SnowDrop("雪花飘落", "/page/snowDrop", true),
     BalloonFlyBinding("气球绑定货物", "/page/balloonFlyBinding", false),
-    BezierPath("贝塞尔曲线", "/page/bezierPath", true),
-    BezierAxios("贝塞尔坐标", "/page/bezierAxios", true)
+    BezierEditor("贝塞尔参数编辑", "/page/bezierEditor", true),
+    BezierPreview("贝塞尔动画预览", "/page/bezierPreview", true)
 }

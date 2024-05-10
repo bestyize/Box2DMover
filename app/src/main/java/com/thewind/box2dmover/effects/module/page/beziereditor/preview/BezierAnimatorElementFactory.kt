@@ -1,27 +1,52 @@
-package com.thewind.box2dmover.effects.module.page.beziermove.animate.factory
+package com.thewind.box2dmover.effects.module.page.beziereditor.preview
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
+import android.content.Context
+import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.Path
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
-import com.thewind.box2dmover.effects.module.page.beziermove.animate.model.AnimateItem
-import com.thewind.box2dmover.effects.module.page.beziermove.animate.model.AnimatePosition
-import com.thewind.box2dmover.effects.module.page.beziermove.animate.model.AnimateType
-import com.thewind.box2dmover.effects.module.page.beziermove.animate.model.BezierParam
-import com.thewind.box2dmover.effects.module.page.beziermove.animate.model.animateType
+import com.thewind.box2dmover.effects.module.page.beziereditor.model.AnimatePosition
+import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierAnimateElement
+import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierAnimationType
+import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierParam
+import com.thewind.box2dmover.effects.module.page.beziereditor.model.animationType
 
+
+fun createAnimatorView(
+    element: BezierAnimateElement, context: Context, containerWidth: Float, containerHeight: Float
+): View {
+    val eleScale =
+        element.list.filter { it.animationType == BezierAnimationType.SIZE }.sortedBy { it.delay }
+            .getOrNull(0)?.param?.start?.y ?: 1f
+    val eleSize = eleScale * element.width.toPx()
+
+    val position =
+        element.list.filter { it.animationType == BezierAnimationType.MOVE }.sortedBy { it.delay }
+            .getOrNull(0)?.param?.start ?: element.position
+
+    val startX = position.x * containerWidth - eleSize / 2
+    val startY = position.y * containerHeight - eleSize / 2
+
+
+    return View(context).apply {
+        x = startX
+        y = startY
+        layoutParams = ViewGroup.LayoutParams(eleSize.toInt(), eleSize.toInt())
+        setBackgroundColor(Color.RED)
+    }
+}
 
 fun decodeToAnimatorList(
-    animateItem: AnimateItem,
-    view: View,
-    containerWidth: Float,
-    containerHeight: Float
+    element: BezierAnimateElement, view: View, containerWidth: Float, containerHeight: Float
 ): List<Animator> {
 
     val moveAnimateList =
-        animateItem.animateList.filter { it.animateType == AnimateType.MOVE }.map { item ->
+        element.list.filter { it.animationType == BezierAnimationType.MOVE }.map { item ->
             val path = item.param.toPath(containerWidth, containerHeight)
             ObjectAnimator.ofFloat(AnimatePosition(), "x", "y", path).apply {
                 interpolator = LinearInterpolator()
@@ -38,7 +63,7 @@ fun decodeToAnimatorList(
         }
 
     val alphaAnimateList =
-        animateItem.animateList.filter { it.animateType == AnimateType.ALPHA }.map { item ->
+        element.list.filter { it.animationType == BezierAnimationType.ALPHA }.map { item ->
             val path = item.param.toPath()
             ObjectAnimator.ofFloat(AnimatePosition(), "x", "y", path).apply {
                 interpolator = LinearInterpolator()
@@ -52,7 +77,7 @@ fun decodeToAnimatorList(
 
 
     val sizeAnimateList =
-        animateItem.animateList.filter { it.animateType == AnimateType.SIZE }.map { item ->
+        element.list.filter { it.animationType == BezierAnimationType.SIZE }.map { item ->
             val path = item.param.toPath()
             ObjectAnimator.ofFloat(AnimatePosition(), "x", "y", path).apply {
                 interpolator = LinearInterpolator()
@@ -60,16 +85,17 @@ fun decodeToAnimatorList(
                 duration = item.duration
                 addUpdateListener {
                     val scale = it.getAnimatedValue("y") as Float
+                    val size = (element.width.toPx() * scale).toInt()
                     view.layoutParams = view.layoutParams.apply {
-                        width = (animateItem.viewParam.width * containerWidth * scale).toInt()
-                        height = (animateItem.viewParam.height * containerHeight * scale).toInt()
+                        width = size
+                        height = size
                     }
                 }
             }
         }
 
     val rotateAnimateList =
-        animateItem.animateList.filter { it.animateType == AnimateType.ROTATE }.map { item ->
+        element.list.filter { it.animationType == BezierAnimationType.ANGLE }.map { item ->
             val path = item.param.toPath()
             ObjectAnimator.ofFloat(AnimatePosition(), "x", "y", path).apply {
                 interpolator = LinearInterpolator()
@@ -84,7 +110,6 @@ fun decodeToAnimatorList(
         }
 
     return moveAnimateList + alphaAnimateList + sizeAnimateList + rotateAnimateList
-
 }
 
 
@@ -100,4 +125,8 @@ private fun BezierParam.toPath(scaleX: Float = 1f, scaleY: Float = 1f): Path {
             end.y * scaleY
         )
     }
+}
+
+fun Int.toPx(): Int {
+    return (this * (Resources.getSystem().displayMetrics?.density ?: 2f) + 0.5f).toInt()
 }

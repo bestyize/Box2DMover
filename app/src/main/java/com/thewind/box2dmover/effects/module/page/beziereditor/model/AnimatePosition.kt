@@ -1,4 +1,4 @@
-package com.thewind.box2dmover.effects.module.page.beziermove.animate.model
+package com.thewind.box2dmover.effects.module.page.beziereditor.model
 
 import androidx.annotation.Keep
 
