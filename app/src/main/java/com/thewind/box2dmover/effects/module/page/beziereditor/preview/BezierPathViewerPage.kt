@@ -25,7 +25,7 @@ fun BezierPathViewerPage(
         elements.forEach { element ->
             element.list.filter { it.animationType == BezierAnimationType.MOVE }
                 .forEach { animation ->
-                    val path = animation.param.toPath(
+                    val path = animation.param.toMovePath(
                         containerWidth.toPx().toFloat(), containerHeight.toPx().toFloat()
                     )
                     drawPath(
@@ -38,7 +38,7 @@ fun BezierPathViewerPage(
     }
 }
 
-private fun BezierParam.toPath(scaleX: Float = 1f, scaleY: Float = 1f): Path {
+private fun BezierParam.toMovePath(scaleX: Float = 1f, scaleY: Float = 1f): Path {
     return Path().apply {
         moveTo(start.x * scaleX, (1 - start.y) * scaleY)
         cubicTo(

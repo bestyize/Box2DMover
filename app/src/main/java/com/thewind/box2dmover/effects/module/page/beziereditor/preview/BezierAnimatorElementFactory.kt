@@ -56,7 +56,7 @@ fun decodeToAnimatorList(
 
     val moveAnimateList =
         element.list.filter { it.animationType == BezierAnimationType.MOVE }.map { item ->
-            val path = item.param.toPath(containerWidth, containerHeight)
+            val path = item.param.toMovePath(containerWidth, containerHeight)
             ObjectAnimator.ofFloat(AnimatePosition(), "x", "y", path).apply {
                 interpolator = LinearInterpolator()
                 startDelay = item.delay
@@ -121,8 +121,23 @@ fun decodeToAnimatorList(
     return moveAnimateList + alphaAnimateList + sizeAnimateList + rotateAnimateList
 }
 
-
 private fun BezierParam.toPath(scaleX: Float = 1f, scaleY: Float = 1f): Path {
+    return Path().apply {
+        moveTo(start.x * scaleX, start.y * scaleY)
+        cubicTo(
+            control1.x * scaleX,
+            control1.y * scaleY,
+            control2.x * scaleX,
+            control2.y * scaleY,
+            end.x * scaleX,
+            end.y* scaleY
+        )
+    }
+}
+
+
+
+private fun BezierParam.toMovePath(scaleX: Float = 1f, scaleY: Float = 1f): Path {
     return Path().apply {
         moveTo(start.x * scaleX, (1 - start.y) * scaleY)
         cubicTo(
