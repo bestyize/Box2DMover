@@ -30,7 +30,7 @@ val LocalEffectNavigation = staticCompositionLocalOf<NavHostController> {
 fun EffectRouterPage() {
     val navController = rememberNavController()
     CompositionLocalProvider(LocalEffectNavigation provides navController) {
-        NavHost(navController = navController, startDestination = "/page/select") {
+        NavHost(navController = navController, startDestination = EffectType.BezierEditor.router) {
             composable("/page/select") {
                 EffectPage { page ->
                     navController.navigate(page)
@@ -70,9 +70,7 @@ fun EffectRouterPage() {
             }
 
             composable(
-                EffectType.BezierPreview.router,
-                enterTransition = slideInFromRight,
-                exitTransition = slideOutToRight
+                EffectType.BezierPreview.router
             ) {
                 BezierAnimatorPreviewPage()
             }

@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
@@ -36,8 +35,8 @@ fun TitleHeader(
             color = color,
             fontSize = 18.sp,
             modifier = Modifier
-                .padding(start = 15.dp, end = 15.dp, bottom = 6.dp)
-                .wrapContentSize().safeContentPadding()
+                .padding(start = 15.dp, end = 15.dp, bottom = 6.dp, top = 30.dp)
+                .wrapContentSize()
                 .align(Alignment.Center)
         )
     }

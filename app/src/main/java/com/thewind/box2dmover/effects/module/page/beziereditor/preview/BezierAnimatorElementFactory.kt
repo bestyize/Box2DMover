@@ -30,12 +30,21 @@ fun createAnimatorView(
             .getOrNull(0)?.param?.start ?: element.position
 
     val startX = position.x * containerWidth - eleSize / 2
-    val startY = position.y * containerHeight - eleSize / 2
+    val startY = (1 - position.y) * containerHeight - eleSize / 2
 
+    val initAngle =
+        element.list.filter { it.animationType == BezierAnimationType.ANGLE }.sortedBy { it.delay }
+            .getOrNull(0)?.param?.start?.y ?: 0f
+
+    val initAlpha =
+        element.list.filter { it.animationType == BezierAnimationType.ALPHA }.sortedBy { it.delay }
+            .getOrNull(0)?.param?.start?.y ?: 1f
 
     return View(context).apply {
         x = startX
         y = startY
+        rotation = initAngle
+        alpha = initAlpha
         layoutParams = ViewGroup.LayoutParams(eleSize.toInt(), eleSize.toInt())
         setBackgroundColor(Color.RED)
     }
@@ -115,14 +124,14 @@ fun decodeToAnimatorList(
 
 private fun BezierParam.toPath(scaleX: Float = 1f, scaleY: Float = 1f): Path {
     return Path().apply {
-        moveTo(start.x * scaleX, start.y * scaleY)
+        moveTo(start.x * scaleX, (1 - start.y) * scaleY)
         cubicTo(
             control1.x * scaleX,
-            control1.y * scaleY,
+            (1 - control1.y) * scaleY,
             control2.x * scaleX,
-            control2.y * scaleY,
+            (1 - control2.y) * scaleY,
             end.x * scaleX,
-            end.y * scaleY
+            (1 - end.y) * scaleY
         )
     }
 }

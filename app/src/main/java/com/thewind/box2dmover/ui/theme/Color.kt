@@ -27,5 +27,6 @@ val ThemeColor1 = Color(0xFF95E1D3)
 val ThemeColor2 = Color(0xFFEAFFD0)
 val ThemeColor3 = Color(0xFFFCE38A)
 val ThemeColor4 = Color(0xFFF38181)
+val ThemeColor4Half = Color(0xAFF38181)
 
 val BiliPink = ThemeColor4

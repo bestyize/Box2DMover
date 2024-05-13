@@ -21,11 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierEditorPageAction
-import com.thewind.box2dmover.ui.theme.Ga1Half
 import com.thewind.box2dmover.ui.theme.ThemeColor4
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +38,11 @@ fun BezierEditorOptionDialog(
         listOf(
             BezierEditorPageAction.Add,
             BezierEditorPageAction.Export,
-            BezierEditorPageAction.Preview
+            BezierEditorPageAction.AddElement,
+            BezierEditorPageAction.RemoveElement,
+            BezierEditorPageAction.Preview,
+            BezierEditorPageAction.EditPreview,
+            BezierEditorPageAction.SaveAnimation
         )
     }
 
@@ -79,11 +83,12 @@ fun BezierEditorOptionDialog(
 @Composable
 private fun OptionCard(title: String = "", onClick: () -> Unit = {}) {
     Text(text = title,
+        fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,
-        color = Color.White,
+        color = ThemeColor4,
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Ga1Half, shape = RoundedCornerShape(8.dp))
+            .background(color = Color(0xCFFFFFFF), shape = RoundedCornerShape(8.dp))
             .padding(12.dp)
             .clickable(interactionSource = remember {
                 MutableInteractionSource()

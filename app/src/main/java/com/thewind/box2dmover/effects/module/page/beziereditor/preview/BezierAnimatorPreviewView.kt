@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.view.children
-import androidx.core.view.doOnPreDraw
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierAnimateElement
 
 class BezierAnimatorPreviewView(context: Context, attr: AttributeSet? = null) :
@@ -17,10 +16,16 @@ class BezierAnimatorPreviewView(context: Context, attr: AttributeSet? = null) :
         layoutParams = LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         )
-        setBackgroundColor(0xFFF1F2F3.toInt())
+        setBackgroundColor(0x7Ff1f2f3)
     }
 
-    fun play(elementList: List<BezierAnimateElement>) {
+    private var animateSet: AnimatorSet? = null
+
+
+    fun initAnimation(elementList: List<BezierAnimateElement>) {
+        if (animateSet != null) {
+            animateSet?.cancel()
+        }
         children.forEach {
             removeView(it)
         }
@@ -43,11 +48,16 @@ class BezierAnimatorPreviewView(context: Context, attr: AttributeSet? = null) :
             aniList.addAll(elementAnimationList)
             addView(view)
         }
-        val animationSet = AnimatorSet().apply {
+        animateSet = AnimatorSet().apply {
             playTogether(aniList)
         }
-        animationSet.start()
+    }
 
+    fun play() {
+        animateSet?.let {
+            if (it.isRunning) return
+            it.start()
+        }
     }
 
 

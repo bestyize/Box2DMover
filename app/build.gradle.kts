@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.libGdx2d)
     implementation(libs.libGdx2dNative)
     implementation(libs.gson)
+    implementation(libs.mmkv)
     implementation(libs.mpChart)
     implementation(libs.composeNavigation)
     implementation(libs.androidx.appcompat)

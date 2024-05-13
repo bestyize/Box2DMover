@@ -35,7 +35,7 @@ fun EffectPageBackgroundCard(title: String = "雪飘人间") {
         }
         .padding(10.dp)) {
         Text(
-            text = "雪花飘落",
+            text = title,
             color = Color.White,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,

@@ -1,6 +1,7 @@
 package com.thewind.box2dmover.effects.module.page.beziereditor
 
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -17,6 +18,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -24,6 +28,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,6 +54,8 @@ import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierAnima
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierAnimateItem
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierEditorPageAction
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierPoint
+import com.thewind.box2dmover.effects.module.page.beziereditor.model.animationType
+import com.thewind.box2dmover.effects.module.page.beziereditor.preview.BezierPreviewPageEditDialog
 import com.thewind.box2dmover.effects.module.page.beziereditor.vm.BezierStudioViewModel
 import com.thewind.box2dmover.effects.router.LocalEffectNavigation
 import com.thewind.box2dmover.ui.theme.Bg1
@@ -54,10 +63,12 @@ import com.thewind.box2dmover.ui.theme.Bg2
 import com.thewind.box2dmover.ui.theme.BiliPink
 import com.thewind.box2dmover.ui.theme.Ga1
 import com.thewind.box2dmover.ui.theme.Ga2
+import com.thewind.box2dmover.ui.theme.Text1
 import com.thewind.box2dmover.ui.theme.Text3
 import com.thewind.box2dmover.widget.TitleHeader
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview
 fun BezierParamEditorPage() {
@@ -65,10 +76,13 @@ fun BezierParamEditorPage() {
         modelClass = BezierStudioViewModel::class.java,
         viewModelStoreOwner = LocalContext.current as ComponentActivity
     )
-    val pageState by vm.pageState.collectAsState()
+    val state by vm.pageState.collectAsState()
+
     val scope = rememberCoroutineScope()
 
-    val navController = LocalEffectNavigation.current
+    val pagerState = rememberPagerState(initialPage = 0) {
+        state.elements.size
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -81,37 +95,51 @@ fun BezierParamEditorPage() {
 
         ) {
             TitleHeader("元素动画编辑器", color = Color.White, backgroundColor = BiliPink)
-
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                item {
-                    Spacer(modifier = Modifier.height(2.dp))
-                    ElementBaseParamCard(element = pageState.element) {
-                        scope.launch {
-                            vm.updateBasicElementParam(position = it.position, width = it.width)
-                        }
-                    }
-                }
-                items(count = pageState.element.list.size) { index ->
-                    val animateItem = pageState.element.list[index]
-                    WholeAnimatorItemCard(title = "动画$index",
-                        animateItem = animateItem,
-                        onChange = {
-                            scope.launch {
-                                vm.updateAnimateItem(index, it)
-                            }
-                        },
-                        onRemove = {
-                            scope.launch {
-                                vm.removeAnimateItem(index)
-                            }
-                        })
-                }
-
-                item {
-                    Spacer(modifier = Modifier.height(100.dp))
+            ScrollableTabRow(
+                selectedTabIndex = pagerState.currentPage,
+                edgePadding = 0.dp,
+                divider = {},
+                containerColor = Bg1,
+                indicator = {
+                    Spacer(
+                        modifier = Modifier
+                            .tabIndicatorOffset(it[pagerState.currentPage])
+                            .height(3.dp)
+                            .background(BiliPink, RoundedCornerShape(3.dp))
+                    )
+                },
+                modifier = Modifier.wrapContentWidth()
+            ) {
+                state.elements.forEachIndexed { index, source ->
+                    val isSelected = index == pagerState.currentPage
+                    Text(text = remember {
+                        "元素$index"
+                    },
+                        color = if (isSelected) BiliPink else Text1,
+                        fontSize = if (isSelected) 16.sp else 15.sp,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(vertical = 12.dp)
+                            .clickable(indication = null, interactionSource = remember {
+                                MutableInteractionSource()
+                            }) {
+                                scope.launch {
+                                    pagerState.scrollToPage(index)
+                                }
+                            })
                 }
             }
-
+            Spacer(modifier = Modifier.height(2.dp))
+            HorizontalPager(state = pagerState) {
+                val element = state.elements[it]
+                SingleElementAnimationPage(
+                    vm = vm,
+                    elementIndex = it,
+                    element = element,
+                    isSelected = pagerState.currentPage == it
+                )
+            }
             Spacer(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
@@ -143,20 +171,86 @@ fun BezierParamEditorPage() {
         }
 
     }
+    if (state.openContainerEditorPage) {
+        BezierPreviewPageEditDialog(containerWidth = state.previewContainerWidth,
+            containerHeight = state.previewContainerHeight,
+            onChange = { w, h ->
+                scope.launch {
+                    vm.updateContainerSize(w, h)
+                }
+            },
+            onClose = {
+                scope.launch {
+                    vm.closeContainerAdjustDialog()
+                }
+            })
+    }
+}
 
-    if (pageState.openCopyDialog) {
+@Composable
+private fun SingleElementAnimationPage(
+    vm: BezierStudioViewModel,
+    elementIndex: Int,
+    element: BezierAnimateElement,
+    isSelected: Boolean = false
+) {
+    val pageState by vm.pageState.collectAsState()
+    val navController = LocalEffectNavigation.current
+    val scrollState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    LazyColumn(state = scrollState, modifier = Modifier.fillMaxSize()) {
+        item {
+            Spacer(modifier = Modifier.height(2.dp))
+            ElementBaseParamCard(element = element) {
+                scope.launch {
+                    vm.updateBasicElementParam(
+                        elementIndex = elementIndex, position = it.position, width = it.width
+                    )
+                }
+            }
+        }
+        items(count = element.list.size) { index ->
+            val animateItem = element.list[index]
+            WholeAnimatorItemCard(title = "动画$index", animateItem = animateItem, onChange = {
+                scope.launch {
+                    vm.updateAnimateItem(
+                        elementIndex = elementIndex, position = index, animateItem = it
+                    )
+                }
+            }, onRemove = {
+                scope.launch {
+                    scrollState.scrollToItem(0)
+                    vm.removeAnimateItem(elementIndex = elementIndex, position = index)
+                }
+            })
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(100.dp))
+        }
+    }
+
+    if (pageState.openCopyDialog && isSelected) {
         AnimatorShareDialog(content = pageState.animatorJson) {
             vm.closeCopyDialog()
         }
     }
 
-    if (pageState.openOptionDialog) {
+    if (pageState.openOptionDialog && isSelected) {
         BezierEditorOptionDialog(onAction = {
             scope.launch {
                 when (it) {
-                    BezierEditorPageAction.Add -> vm.addAnimateItem()
+                    BezierEditorPageAction.Add -> {
+                        scrollState.scrollToItem(element.list.size + 1)
+                        vm.addAnimateItem(elementIndex)
+                    }
+
                     BezierEditorPageAction.Preview -> navController.navigate(EffectType.BezierPreview.router)
                     BezierEditorPageAction.Export -> vm.openCopyDialog()
+                    BezierEditorPageAction.AddElement -> vm.addElement()
+                    BezierEditorPageAction.RemoveElement -> vm.removeElement(elementIndex)
+                    BezierEditorPageAction.EditPreview -> vm.showContainerAdjustDialog()
+                    BezierEditorPageAction.SaveAnimation -> vm.saveAnimation()
                 }
                 vm.closeOptionDialog()
             }
@@ -165,7 +259,6 @@ fun BezierParamEditorPage() {
             vm.closeOptionDialog()
         })
     }
-
 }
 
 
@@ -177,6 +270,9 @@ private fun WholeAnimatorItemCard(
     onChange: (BezierAnimateItem) -> Unit = {},
     onRemove: () -> Unit = {}
 ) {
+    var openAnimationTypeSelectDialog by remember {
+        mutableStateOf(false)
+    }
     Box(
         modifier = Modifier
             .padding(vertical = 5.dp)
@@ -205,9 +301,10 @@ private fun WholeAnimatorItemCard(
                     .height(1.dp)
                     .background(color = Bg2)
             )
-            SingleParamInputCard(title = "动画类型", value = animateItem.type.toLong()) {
-                onChange.invoke(animateItem.copy(type = it.toInt()))
+            SingleParamDisplayCard(title = "动画类型", value = animateItem.animationType.title) {
+                openAnimationTypeSelectDialog = true
             }
+
             SingleParamInputCard(title = "起始时间", value = animateItem.delay) {
                 onChange.invoke(animateItem.copy(delay = it))
             }
@@ -249,6 +346,15 @@ private fun WholeAnimatorItemCard(
 
     }
 
+    if (openAnimationTypeSelectDialog) {
+        BezierAnimationTypeSelectDialog(onAction = {
+            onChange.invoke(animateItem.copy(type = it.type))
+            openAnimationTypeSelectDialog = false
+        }, onClose = {
+            openAnimationTypeSelectDialog = false
+        })
+    }
+
 
 }
 
@@ -285,7 +391,6 @@ private fun BezierItemEditorCard(
                 it.toFloatOrNull()?.let { validX ->
                     onChange.invoke(point.copy(x = validX))
                 }
-
             },
             modifier = Modifier
                 .background(Ga2, shape = RoundedCornerShape(3.dp))
@@ -348,6 +453,37 @@ private fun SingleParamInputCard(
                 .onFocusChanged {
                     v = "$value"
                 })
+    }
+}
+
+@Composable
+@Preview
+private fun SingleParamDisplayCard(
+    modifier: Modifier = Modifier,
+    title: String = "起始时间(ms)",
+    value: String = "无",
+    onClick: () -> Unit = {}
+) {
+    Row(
+        modifier = modifier
+            .wrapContentWidth()
+            .wrapContentHeight()
+            .padding(vertical = 4.dp)
+            .clickable {
+                onClick.invoke()
+            },
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(text = title, modifier = Modifier.wrapContentWidth(), color = BiliPink)
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = value,
+            fontSize = 12.sp,
+            modifier = Modifier
+                .background(Ga2, shape = RoundedCornerShape(3.dp))
+                .padding(horizontal = 5.dp, vertical = 5.dp)
+                .width(40.dp)
+        )
     }
 }
 

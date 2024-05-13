@@ -49,15 +49,17 @@ fun EffectPage(switchPage: (String) -> Unit = {}) {
             bgImage?.updateBounds(0, 0, size.width.toInt(), size.height.toInt())
             bgImage?.draw(drawContext.canvas.nativeCanvas)
         }
-        .padding(10.dp)) {
+        .padding(horizontal = 10.dp, vertical = 25.dp)) {
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             EffectType.entries.forEach {
-                EffectOptionView(it.title) {
-                    scope.launch {
-                        switchPage.invoke(it.router)
+                if (it.support) {
+                    EffectOptionView(it.title) {
+                        scope.launch {
+                            switchPage.invoke(it.router)
+                        }
                     }
                 }
             }
@@ -69,9 +71,7 @@ fun EffectPage(switchPage: (String) -> Unit = {}) {
 @Composable
 @Preview
 private fun EffectOptionView(
-    title: String = "雪花降落",
-    support: Boolean = true,
-    onClick: () -> Unit = {}
+    title: String = "雪花降落", support: Boolean = true, onClick: () -> Unit = {}
 ) {
 
     val scope = rememberCoroutineScope()

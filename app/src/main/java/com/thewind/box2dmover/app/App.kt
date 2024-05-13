@@ -3,11 +3,13 @@ package com.thewind.box2dmover.app
 import android.app.Application
 import android.widget.Toast
 import com.badlogic.gdx.physics.box2d.Box2D
+import com.tencent.mmkv.MMKV
 
 class App : Application() {
     override fun onCreate() {
         _app = this
         super.onCreate()
+        MMKV.initialize(this)
         Box2D.init()
     }
 
