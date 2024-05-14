@@ -112,7 +112,6 @@ fun decodeToAnimatorList(
                 duration = item.duration
                 addUpdateListener {
                     val angle = it.getAnimatedValue("y") as Float
-                    Log.i("[read", "angle = $angle")
                     view.rotation = angle
                 }
             }
@@ -130,11 +129,10 @@ private fun BezierParam.toPath(scaleX: Float = 1f, scaleY: Float = 1f): Path {
             control2.x * scaleX,
             control2.y * scaleY,
             end.x * scaleX,
-            end.y* scaleY
+            end.y * scaleY
         )
     }
 }
-
 
 
 private fun BezierParam.toMovePath(scaleX: Float = 1f, scaleY: Float = 1f): Path {

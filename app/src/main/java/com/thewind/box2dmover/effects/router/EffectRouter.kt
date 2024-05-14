@@ -17,8 +17,8 @@ import androidx.navigation.compose.rememberNavController
 import com.thewind.box2dmover.effects.main.EffectPage
 import com.thewind.box2dmover.effects.module.EffectType
 import com.thewind.box2dmover.effects.module.page.ballflybinding.BalloonFlyBindingPage
-import com.thewind.box2dmover.effects.module.page.balloonfly.BalloonFlyPage
 import com.thewind.box2dmover.effects.module.page.beziereditor.BezierParamEditorPage
+import com.thewind.box2dmover.effects.module.page.beziereditor.preview.BezierAnimatorPreviewComposePage
 import com.thewind.box2dmover.effects.module.page.beziereditor.preview.BezierAnimatorPreviewPage
 import com.thewind.box2dmover.effects.module.page.snowdrop.SnowDropPage
 
@@ -30,7 +30,7 @@ val LocalEffectNavigation = staticCompositionLocalOf<NavHostController> {
 fun EffectRouterPage() {
     val navController = rememberNavController()
     CompositionLocalProvider(LocalEffectNavigation provides navController) {
-        NavHost(navController = navController, startDestination = EffectType.BezierEditor.router) {
+        NavHost(navController = navController, startDestination = "/page/select") {
             composable("/page/select") {
                 EffectPage { page ->
                     navController.navigate(page)
@@ -46,11 +46,11 @@ fun EffectRouterPage() {
             }
 
             composable(
-                EffectType.BalloonFly.router,
+                EffectType.ComposeBezierPreview.router,
                 enterTransition = slideInFromRight,
                 exitTransition = slideOutToRight
             ) {
-                BalloonFlyPage()
+                BezierAnimatorPreviewComposePage()
             }
 
             composable(

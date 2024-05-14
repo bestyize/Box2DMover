@@ -45,7 +45,7 @@ fun BezierAnimatorPreviewPage() {
             .fillMaxSize()
             .background(color = Color.White)
     ) {
-        BezierPathViewerPage(
+        BezierPathViewerLayer(
             modifier = Modifier.align(Alignment.Center),
             elements = state.elements,
             containerWidth = state.previewContainerWidth,

@@ -33,7 +33,7 @@ fun EffectPageBackgroundCard(title: String = "雪飘人间") {
             bgImage?.updateBounds(0, 0, size.width.toInt(), size.height.toInt())
             bgImage?.draw(drawContext.canvas.nativeCanvas)
         }
-        .padding(10.dp)) {
+        .padding(horizontal = 10.dp, vertical = 25.dp)) {
         Text(
             text = title,
             color = Color.White,
