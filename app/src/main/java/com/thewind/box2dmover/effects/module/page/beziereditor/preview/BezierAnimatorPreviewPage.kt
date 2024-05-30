@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thewind.box2dmover.effects.main.EffectPageActionButton
 import com.thewind.box2dmover.effects.module.page.beziereditor.vm.BezierStudioViewModel
@@ -87,7 +88,10 @@ fun BezierAnimatorPreviewPage() {
     }
 
     LaunchedEffect(state.previewContainerWidth + state.previewContainerHeight) {
-        view.initAnimation(state.elements)
+        view.doOnPreDraw {
+            view.initAnimation(state.elements)
+        }
+
     }
 
 

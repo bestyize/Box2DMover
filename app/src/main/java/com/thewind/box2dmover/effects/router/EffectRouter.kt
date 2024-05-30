@@ -18,7 +18,7 @@ import com.thewind.box2dmover.effects.main.EffectPage
 import com.thewind.box2dmover.effects.module.EffectType
 import com.thewind.box2dmover.effects.module.page.ballflybinding.BalloonFlyBindingPage
 import com.thewind.box2dmover.effects.module.page.beziereditor.BezierParamEditorPage
-import com.thewind.box2dmover.effects.module.page.beziereditor.preview.BezierAnimatorPreviewComposePage
+import com.thewind.box2dmover.effects.module.page.beziereditor.preview.cps.BezierAnimatorPreviewComposePage
 import com.thewind.box2dmover.effects.module.page.beziereditor.preview.BezierAnimatorPreviewPage
 import com.thewind.box2dmover.effects.module.page.snowdrop.SnowDropPage
 

@@ -16,6 +16,9 @@ class App : Application() {
     companion object {
         private lateinit var _app: Application
         val app by lazy { _app }
+
+        var heightPx: Int = 0
+        var widthPx: Int = 0
     }
 }
 

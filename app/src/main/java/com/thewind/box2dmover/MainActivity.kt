@@ -1,6 +1,7 @@
 package com.thewind.box2dmover
 
 import android.os.Bundle
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import androidx.activity.ComponentActivity
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.updateBounds
+import androidx.core.view.doOnPreDraw
 import com.thewind.box2dmover.app.App
 import com.thewind.box2dmover.effects.router.EffectRouterPage
 import com.thewind.box2dmover.mov.model.WorldParam
@@ -48,6 +50,15 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        window.decorView.findViewById<ViewGroup>(android.R.id.content).doOnPreDraw {
+
+            App.heightPx = window.decorView.height
+            App.widthPx = window.decorView.width
+        }
     }
 
     @Composable

@@ -4,8 +4,8 @@ data class BezierEditorPageState(
     val openCopyDialog: Boolean = false,
     val openOptionDialog: Boolean = false,
     val openContainerEditorPage: Boolean = false,
-    val previewContainerWidth: Int = 350,
-    val previewContainerHeight: Int = 700,
+    val previewContainerWidth: Int = -1,
+    val previewContainerHeight: Int = -1,
     val elements: List<BezierAnimateElement> = listOf(
         BezierAnimateElement(), BezierAnimateElement()
     ),

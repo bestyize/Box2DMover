@@ -33,20 +33,23 @@ class BezierAnimatorPreviewView(context: Context, attr: AttributeSet? = null) :
         val containerHeight = height.toFloat()
         val aniList = mutableListOf<Animator>()
         elementList.forEach { element ->
-            val view = createAnimatorView(
+            val view = createSurpriseRainElement(
                 element = element,
                 context = context,
                 containerWidth = containerWidth,
                 containerHeight = containerHeight
             )
-            val elementAnimationList = decodeToAnimatorList(
-                element = element,
-                view = view,
-                containerWidth = containerWidth,
-                containerHeight = containerHeight
-            )
-            aniList.addAll(elementAnimationList)
-            addView(view)
+            view?.let {
+                val elementAnimationList = decodeToAnimationList(
+                    element = element,
+                    view = view,
+                    containerWidth = containerWidth,
+                    containerHeight = containerHeight
+                )
+                aniList.addAll(elementAnimationList)
+                addView(view)
+            }
+
         }
         animateSet = AnimatorSet().apply {
             playTogether(aniList)

@@ -113,7 +113,7 @@ fun BezierParamEditorPage() {
                 state.elements.forEachIndexed { index, source ->
                     val isSelected = index == pagerState.currentPage
                     Text(text = remember {
-                        "元素$index"
+                        "元素${index + 1}"
                     },
                         color = if (isSelected) BiliPink else Text1,
                         fontSize = if (isSelected) 16.sp else 15.sp,
@@ -211,18 +211,22 @@ private fun SingleElementAnimationPage(
         }
         items(count = element.list.size) { index ->
             val animateItem = element.list[index]
-            WholeAnimatorItemCard(title = "动画$index", animateItem = animateItem, onChange = {
-                scope.launch {
-                    vm.updateAnimateItem(
-                        elementIndex = elementIndex, position = index, animateItem = it
-                    )
-                }
-            }, onRemove = {
-                scope.launch {
-                    scrollState.scrollToItem(0)
-                    vm.removeAnimateItem(elementIndex = elementIndex, position = index)
-                }
-            })
+            WholeAnimatorItemCard(
+                title = "动画${index + 1}",
+                animateItem = animateItem,
+                onChange = {
+                    scope.launch {
+                        vm.updateAnimateItem(
+                            elementIndex = elementIndex, position = index, animateItem = it
+                        )
+                    }
+                },
+                onRemove = {
+                    scope.launch {
+                        scrollState.scrollToItem(0)
+                        vm.removeAnimateItem(elementIndex = elementIndex, position = index)
+                    }
+                })
         }
 
         item {

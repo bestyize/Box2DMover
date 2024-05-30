@@ -1,4 +1,4 @@
-package com.thewind.box2dmover.effects.module.page.beziereditor.preview
+package com.thewind.box2dmover.effects.module.page.beziereditor.preview.cps
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
@@ -34,6 +34,7 @@ import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierAnima
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierAnimationType
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierParam
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.animationType
+import com.thewind.box2dmover.effects.module.page.beziereditor.preview.BezierPathViewerLayer
 import com.thewind.box2dmover.effects.module.page.beziereditor.vm.BezierStudioViewModel
 import com.thewind.box2dmover.ui.theme.ThemeColor4Half
 
@@ -190,7 +191,7 @@ private fun ElementView(
 
 private fun BezierParam.toMovePath(scaleX: Float = 1f, scaleY: Float = 1f): Path {
     return Path().apply {
-        moveTo(start.x * scaleX, (1 - start.y) * scaleY)
+        moveTo(start.x * scaleX, start.y * scaleY)
         cubicTo(
             control1.x * scaleX,
             (1 - control1.y) * scaleY,
