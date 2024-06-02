@@ -14,6 +14,10 @@ import com.thewind.box2dmover.effects.module.page.beziereditor.model.BezierAnima
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.animationType
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.orZero
 import com.thewind.box2dmover.effects.module.page.beziereditor.model.toPath
+import com.thewind.box2dmover.effects.module.page.beziereditor.model.toScalePath
+import com.thewind.box2dmover.effects.module.page.beziereditor.preview.elementview.BalloonFlyElementView
+import com.thewind.box2dmover.effects.module.page.beziereditor.preview.elementview.BezierBaseElementView
+import com.thewind.box2dmover.effects.module.page.beziereditor.preview.elementview.SurpriseRainElementView
 
 
 internal fun createSurpriseRainElement(
@@ -24,7 +28,6 @@ internal fun createSurpriseRainElement(
     onClick: (() -> Unit)? = null
 ): BezierBaseElementView? {
 
-    val imagePath = "xxx"
     val list = element.list.sortedBy { it.delay }
     val position = list.firstOrNull { it.animationType == BezierAnimationType.MOVE }?.param?.start
         ?: element.position
@@ -44,7 +47,12 @@ internal fun createSurpriseRainElement(
             y = position.y * containerHeight - eleWidth / 2
             rotation = angle
             alpha = initAlpha
-            layoutParams = ViewGroup.LayoutParams(eleWidth.toInt(), eleWidth.toInt())
+            layoutParams = ViewGroup.LayoutParams(
+                element.width.toPx(),
+                if (element.height <= 0) element.width.toPx() else element.height.toPx()
+            )
+            scaleX = scale
+            scaleY = scale
             bindData(
                 element = element,
                 containerWidth = containerWidth,
@@ -58,7 +66,12 @@ internal fun createSurpriseRainElement(
             y = position.y * containerHeight - eleHeight / 2
             rotation = angle
             alpha = initAlpha
-            layoutParams = ViewGroup.LayoutParams(eleWidth.toInt(), eleHeight.toInt())
+            layoutParams = ViewGroup.LayoutParams(
+                element.width.toPx(),
+                if (element.height <= 0) element.width.toPx() else element.height.toPx()
+            )
+            scaleX = scale
+            scaleY = scale
             bindData(
                 element = element,
                 containerWidth = containerWidth,
@@ -87,8 +100,8 @@ internal fun decodeToAnimationList(
                 view, BezierBaseElementView.ANIM_ALPHA, it
             )
 
-            BezierAnimationType.SIZE -> buildAnimation(
-                view, BezierBaseElementView.ANIM_SIZE, it, element.width.toPx().toFloat()
+            BezierAnimationType.SIZE -> buildScaleAnimation(
+                view, it, it.param.toScalePath()
             )
 
             BezierAnimationType.ANGLE -> buildAnimation(
@@ -120,6 +133,17 @@ private fun buildAnimation(
     setAutoCancel(true)
 }
 
+private fun buildScaleAnimation(
+    view: BezierBaseElementView, item: BezierAnimateItem, path: Path
+): Animator = ObjectAnimator.ofFloat(
+    view, BezierBaseElementView.ANIM_SCALE_X, BezierBaseElementView.ANIM_SCALE_Y, path
+).apply {
+    interpolator = LinearInterpolator()
+    startDelay = item.delay
+    duration = item.duration
+    setAutoCancel(true)
+}
+
 /**
  *  属性动画使用了反射拿get和set， 常规写法存在多次转换，无法在两次屏幕刷新之间完成位移动画，需要定制get 和set提高调用效率
  * @param view SurpriseRainElementView
@@ -140,4 +164,8 @@ private fun buildPathAnimation(
 
 fun Int.toPx(): Int {
     return (this * (Resources.getSystem().displayMetrics?.density ?: 2f) + 0.5f).toInt()
+}
+
+fun Float.toPx(): Float {
+    return this * (Resources.getSystem().displayMetrics?.density ?: 2f) + 0.5f
 }

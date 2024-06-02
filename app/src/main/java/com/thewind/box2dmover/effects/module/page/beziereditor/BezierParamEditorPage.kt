@@ -201,13 +201,24 @@ private fun SingleElementAnimationPage(
     LazyColumn(state = scrollState, modifier = Modifier.fillMaxSize()) {
         item {
             Spacer(modifier = Modifier.height(2.dp))
-            ElementBaseParamCard(element = element) {
-                scope.launch {
-                    vm.updateBasicElementParam(
-                        elementIndex = elementIndex, position = it.position, width = it.width
-                    )
+            if (element.type == 1) {
+                BalloonFlyElementParamCard(element = element) {
+                    scope.launch {
+                        vm.updateBasicElementParam(
+                            elementIndex = elementIndex, it
+                        )
+                    }
+                }
+            } else {
+                ElementBaseParamCard(element = element) {
+                    scope.launch {
+                        vm.updateBasicElementParam(
+                            elementIndex = elementIndex, it
+                        )
+                    }
                 }
             }
+
         }
         items(count = element.list.size) { index ->
             val animateItem = element.list[index]
@@ -520,6 +531,58 @@ private fun ElementBaseParamCard(
         )
         SingleParamInputCard(title = "初始大小", value = element.width.toLong()) {
             onChange.invoke(element.copy(width = it.toInt()))
+        }
+        BezierItemEditorCard(title = "初始坐标", point = element.position) {
+            onChange.invoke(element.copy(position = it))
+        }
+    }
+
+}
+
+
+@Composable
+@Preview
+private fun BalloonFlyElementParamCard(
+    element: BezierAnimateElement = BezierAnimateElement(),
+    onChange: (element: BezierAnimateElement) -> Unit = {}
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Bg1)
+            .padding(15.dp)
+    ) {
+        Text(
+            text = "元素参数",
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+        Spacer(
+            modifier = Modifier
+                .padding(vertical = 5.dp)
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(color = Bg2)
+        )
+        SingleParamInputCard(title = "元素宽度", value = element.width.toLong()) {
+            onChange.invoke(element.copy(width = it.toInt()))
+        }
+        SingleParamInputCard(title = "元素高度", value = element.height.toLong()) {
+            onChange.invoke(element.copy(height = it.toInt()))
+        }
+        SingleParamInputCard(title = "顶部图片宽度", value = element.topImageWidth.toLong()) {
+            onChange.invoke(element.copy(topImageWidth = it.toInt()))
+        }
+        SingleParamInputCard(title = "顶部图片高度", value = element.topImageHeight.toLong()) {
+            onChange.invoke(element.copy(topImageHeight = it.toInt()))
+        }
+        SingleParamInputCard(title = "底部图片宽度", value = element.imageWidth.toLong()) {
+            onChange.invoke(element.copy(imageWidth = it.toInt()))
+        }
+        SingleParamInputCard(title = "底部图片高度", value = element.height.toLong()) {
+            onChange.invoke(element.copy(imageHeight = it.toInt()))
         }
         BezierItemEditorCard(title = "初始坐标", point = element.position) {
             onChange.invoke(element.copy(position = it))
