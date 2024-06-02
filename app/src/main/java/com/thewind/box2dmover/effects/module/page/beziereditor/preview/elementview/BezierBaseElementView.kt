@@ -38,7 +38,5 @@ open class BezierBaseElementView @JvmOverloads constructor(
         const val ANIM_SCALE_X = "scaleX"
 
         const val ANIM_SCALE_Y = "scaleY"
-
-        const val ANIM_SIZE = "size"
     }
 }

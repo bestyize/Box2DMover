@@ -73,9 +73,7 @@ internal fun createSurpriseRainElement(
             scaleX = scale
             scaleY = scale
             bindData(
-                element = element,
-                containerWidth = containerWidth,
-                containerHeight = containerHeight
+                element = element
             )
         }
 
